@@ -39,6 +39,7 @@ def parse_rss_feed(rss_link):
     if parsed_data:
         with open('last_hash.txt', 'w') as file:
             file.write(parsed_data[0]['infoHash'])
+        print(f"parsed data len: {len(parsed_data)}")
     return parsed_data
 
 
