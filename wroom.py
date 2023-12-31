@@ -70,7 +70,7 @@ async def send_to_telegram(parsed_data):
         time.sleep(3)
 
 
-if name == "main":
+if __name__ == "__main__":
     rss_link = 'https://nyaa.si/?page=rss'
     items_data = parse_rss_feed(rss_link)
     asyncio.run(send_to_telegram(items_data))
