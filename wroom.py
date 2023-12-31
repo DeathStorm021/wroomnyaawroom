@@ -17,7 +17,7 @@ def parse_rss_feed(rss_link):
     items = soup.find_all('item')
 
     parsed_data = []
-    with open('last_item.txt', 'r') as file:
+    with open('last_hash.txt', 'r') as file:
         last_infohash = file.read().strip()
 
     for item in items:
@@ -37,7 +37,7 @@ def parse_rss_feed(rss_link):
         parsed_data.append(data)
 
     if parsed_data:
-        with open('last_item.txt', 'w') as file:
+        with open('last_hash.txt', 'w') as file:
             file.write(parsed_data[0]['infoHash'])
     return parsed_data
 
