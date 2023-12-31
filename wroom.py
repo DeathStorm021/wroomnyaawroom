@@ -1,3 +1,4 @@
+import os
 import requests
 import asyncio
 import time
@@ -9,21 +10,19 @@ from telegram.error import TelegramError
 def parse_rss_feed(rss_link):
     response = requests.get(rss_link)
     if response.status_code != 200:
-        print("Failed to fetch the RSS feed.")
+        print("Failed")
         return []
 
     soup = BeautifulSoup(response.content, 'xml')
     items = soup.find_all('item')
 
     parsed_data = []
-    print(f"items:  {len(items)}")
     with open('last_item.txt', 'r') as file:
         last_infohash = file.read().strip()
 
     for item in items:
         current_infohash = item.find('nyaa:infoHash').text
 
-        # If the current item's infoHash matches the last saved infoHash, stop processing
         if current_infohash == last_infohash:
             break
 
@@ -37,22 +36,18 @@ def parse_rss_feed(rss_link):
 
         parsed_data.append(data)
 
-    # Save the latest infoHash to the txt file
     if parsed_data:
         with open('last_item.txt', 'w') as file:
             file.write(parsed_data[0]['infoHash'])
-    print("parsed_data:")
-    print(len(parsed_data))
     return parsed_data
 
 
-TOKEN = '6737420459:AAEzTOJpxlmrTcMd-KvJ3bVt3J2QjyS0x-M'
-CHANNEL_ID = '-1002124029617'
+TOKEN = os.environ.get('TOKEN', '')
+CHANNEL_ID = os.environ.get('CHANNEL_ID', '')
 
 
 async def send_to_telegram(parsed_data):
     bot = Bot(token=TOKEN)
-    i = 0
     for data in parsed_data:
         title = data['title']
         escaped_title = title.replace("_", "\\_")
@@ -69,8 +64,7 @@ async def send_to_telegram(parsed_data):
 
         try:
             await bot.send_message(chat_id=CHANNEL_ID, text=message, parse_mode='Markdown')
-            i += 1
-            print(i)
+            
         except TelegramError as e:
             print(f"Error sending message: {e}")
         time.sleep(3)
