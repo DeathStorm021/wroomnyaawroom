@@ -39,7 +39,15 @@ def parse_rss_feed(rss_link):
     if parsed_data:
         with open('last_hash.txt', 'w') as file:
             file.write(parsed_data[0]['infoHash'])
+            
+    else:
+        with open('count.txt', 'r') as file:
+            number = int(file.read().strip())
+        with open('count.txt', 'w') as file:
+            file.write(str(number+1))
+            
     print(f"parsed data len: {len(parsed_data)}")
+    
     return parsed_data
 
 
@@ -74,7 +82,5 @@ async def send_to_telegram(parsed_data):
 if __name__ == "__main__":
     rss_link = 'https://nyaa.si/?page=rss'
     items_data = parse_rss_feed(rss_link)
-    if items_data is not None:
-        asyncio.run(send_to_telegram(items_data))
-    else:
-        print("ntg")
+    asyncio.run(send_to_telegram(items_data))
+    
