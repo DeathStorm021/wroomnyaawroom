@@ -59,7 +59,7 @@ async def send_to_telegram(parsed_data):
     bot = Bot(token=TOKEN)
     for data in parsed_data:
         title = data['title']
-        escaped_title = title.replace("_", "\\_").replace("[", "\\[").replace("]", "\]")
+        escaped_title = title.replace("_", "\\_").replace("*", "\\*").replace("[", "\\[").replace("`", "\\`")
         size = data['size']
         link = data['link']
         view_link = data['guid']
