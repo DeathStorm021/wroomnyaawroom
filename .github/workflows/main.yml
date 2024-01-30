@@ -44,4 +44,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
       - name: Keepalive Workflow
-        uses: gautamkrishnar/keepalive-workflow@1.1.0
+        uses: gautamkrishnar/keepalive-workflow@v1
