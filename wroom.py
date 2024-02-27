@@ -13,7 +13,7 @@ def parse_rss_feed(rss_link):
         print("Failed")
         return []
 
-    soup = BeautifulSoup(response.content, 'xml')
+    soup = BeautifulSoup(response.text, 'lxml')
     items = soup.find_all('item')
 
     parsed_data = []
@@ -33,12 +33,19 @@ def parse_rss_feed(rss_link):
         data['category'] = item.find('nyaa:category').text
         data['size'] = item.find('nyaa:size').text
         data['infoHash'] = item.find('nyaa:infoHash').text
-
+        
+        nresp=requests.get(data['guid'])
+        nsoup=BeautifulSoup(nresp.text , 'lxml')
+        atag=soup.find('a',class_='card-footer-item')
+        data['magnet']=atag['href']
+        
         parsed_data.append(data)
 
     if parsed_data:
         with open('last_hash.txt', 'w') as file:
             file.write(parsed_data[0]['infoHash'])
+
+
             
     else:
         with open('count.txt', 'r') as file:
@@ -64,10 +71,11 @@ async def send_to_telegram(parsed_data):
         link = data['link']
         view_link = data['guid']
         category = data['category']
+        magnet=data['magnet']
 
         message = (
             f"{escaped_title}\n"
-            f"{size} | ([Download]({link})) | ([View]({view_link}))\n"
+            f"{size} | [Download]({link}) | [Magnet]({magnet}) | [View]({view_link})\n"
             f"#{category}"
         )
 
