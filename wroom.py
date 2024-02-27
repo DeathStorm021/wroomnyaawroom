@@ -13,7 +13,7 @@ def parse_rss_feed(rss_link):
         print("Failed")
         return []
 
-    soup = BeautifulSoup(response.text, 'lxml')
+    soup = BeautifulSoup(response.content, 'xml')
     items = soup.find_all('item')
 
     parsed_data = []
