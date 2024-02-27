@@ -36,7 +36,7 @@ def parse_rss_feed(rss_link):
         
         nresp=requests.get(data['guid'])
         nsoup=BeautifulSoup(nresp.text , 'lxml')
-        atag=soup.find('a',class_='card-footer-item')
+        atag=nsoup.find('a',class_='card-footer-item')
         data['magnet']=atag['href']
         
         parsed_data.append(data)
