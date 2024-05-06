@@ -79,13 +79,14 @@ async def send_to_telegram(parsed_data):
 
         message = (
             f"{escaped_title}\n"
-            f"{size} | [Download]({link}) | [Magnet]({magnet}) | [View]({view_link})\n"
+            f"{size} | [Download]({link}) | Magnet | [View]({view_link})\n"
             f"#{category}"
         )
 
         try:
-            await bot.send_message(chat_id=CHANNEL_ID, text=message, parse_mode='Markdown')
-            
+            msg= await bot.send_message(chat_id=CHANNEL_ID, text=message, parse_mode='Markdown')
+            m_id =msg.message_id
+            await bot.send_message(chat_id=CHANNEL_ID, text=magnet, parse_mode='Markdown',reply_to_message_id=m_id)
         except TelegramError as e:
             print(f"Error sending message: {e}")
         time.sleep(3)
