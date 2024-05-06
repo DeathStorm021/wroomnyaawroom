@@ -85,8 +85,8 @@ async def send_to_telegram(parsed_data):
 
         try:
             msg= await bot.send_message(chat_id=CHANNEL_ID, text=message, parse_mode='Markdown')
-            m_id =msg.message_id
-            await bot.send_message(chat_id=CHANNEL_ID, text=magnet, parse_mode='Markdown',reply_to_message_id=m_id)
+            #m_id =msg.message_id
+            #await bot.send_message(chat_id=CHANNEL_ID, text=magnet, parse_mode='Markdown',reply_to_message_id=m_id)
         except TelegramError as e:
             print(f"Error sending message: {e}")
         time.sleep(3)
