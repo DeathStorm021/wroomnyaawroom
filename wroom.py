@@ -10,6 +10,8 @@ from telegram.error import TelegramError
 def parse_rss_feed(rss_link):
     response = requests.get(rss_link)
     if response.status_code != 200:
+        soup = BeautifulSoup(response.content, 'xml')
+        print(soup.prettify())
         print("Failed")
         return []
 
